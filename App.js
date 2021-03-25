@@ -12,6 +12,7 @@ const Item = ({ number }) => (
 export default function App() {
 
   const [contactsInMemory, setContacts] = useState([]);
+  const [allContacts, setAllContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     (async () => {
@@ -23,9 +24,10 @@ export default function App() {
 
         if (data.length > 0) {
           setLoading(false);
+          setAllContacts(data);
           const sortedContacts = data.filter(c => c.phoneNumbers!== undefined).sort((a, b) => a.firstName - b.firstName);
           setContacts(sortedContacts);
-          console.log(sortedContacts.length);
+          
         }
       }
     })();
@@ -35,11 +37,17 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+       <Text style={{
+        textAlign:'center', 
+        marginVertical: 20,
+        fontStyle:'italic'
+        }}>Total Contacts: {allContacts.length}
+      </Text>
       <Text style={{
         textAlign:'center', 
         marginVertical: 20,
         fontStyle:'italic'
-        }}>Loaded Contacts: {contactsInMemory.length}
+        }}>Sorted Contacts: {contactsInMemory.length}
       </Text>
       {
         !loading?
